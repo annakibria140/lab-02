@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     int selectedPosition = -1;
     Button deleteButton = findViewById(R.id.delete_button);
     Button addButton = findViewById(R.id.add_button);
+    EditText input_text;
 
 
     @Override
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -49,6 +51,17 @@ public class MainActivity extends AppCompatActivity {
         cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
         cityList.setAdapter(cityAdapter);
 
+
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                input_text = (EditText) findViewById(R.id.input_text);
+                //empty add button 
+            }
+        });
+
+/*
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             selectedPosition = position;
         });
 
-                //when the delete button is clicked, delete the one we chose from the dataList
+        //when the delete button is clicked, delete the one we chose from the dataList
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+*/
 
     }
 };
