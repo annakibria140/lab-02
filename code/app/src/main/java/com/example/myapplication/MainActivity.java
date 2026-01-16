@@ -3,9 +3,12 @@ package com.example.myapplication;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -23,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
     ListView cityList;
     ArrayAdapter<String> cityAdapter;
     ArrayList<String> dataList;
-    int selectedPosition = -1;
-    Button deleteButton = findViewById(R.id.delete_button);
-    Button addButton = findViewById(R.id.add_button);
+    ListView city_list;
+    Button submitButton;
     EditText input_text;
-
+    Button delete_button;
+    int selected_position = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         cityList = findViewById(R.id.city_list);
 
-        String []cities = {"Edmonton", "Vancouver", "Moscow", "Sydney", "Berlin", "Vienna", "Tokyo", "Beijing", "Osaka", "New Delhi"};
+        String []cities = {"Edmonton", "Vancouver"};
 
         dataList = new ArrayList<>();
         dataList.addAll(Arrays.asList(cities));
@@ -51,53 +54,45 @@ public class MainActivity extends AppCompatActivity {
         cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
         cityList.setAdapter(cityAdapter);
 
+        submitButton  = findViewById(R.id.submit_button);
+        input_text  = findViewById(R.id.input_text);
 
 
-        addButton.setOnClickListener(new View.OnClickListener() {
+        //adding a city when the submit button is clicked
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                input_text = (EditText) findViewById(R.id.input_text);
-                //empty add button 
+                String newCity = input_text.getText().toString().trim();
+                dataList.add(newCity);
+                cityAdapter.notifyDataSetChanged();
+                input_text.setText("");
             }
         });
 
-/*
-        addButton.setOnClickListener(new View.OnClickListener() {
+
+        city_list = findViewById(R.id.city_list);
+        //handling click events in listView
+        city_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                final EditText input = new EditText(MainActivity.this);
-                //input.setHint("Enter City Name");
-                new AlertDialog.Builder(MainActivity.this).setView(input)
-                        .setPositiveButton("CONFIRM", (dialog, which) -> {
-                            String cityName = input.getText().toString().trim();
-                            if (!cityName.isEmpty()) {
-                                dataList.add(cityName);
-                                cityAdapter.notifyDataSetChanged();
-                            }
-                        })
-                        .setNegativeButton("CANCEL", null)
-                        .show();
-
-
-        //only allow the user to choose one city
-        cityList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        //when the user clicks a city, find the position of the city in the dataList
-        cityList.setOnItemClickListener((parent, view, position, id) -> {
-            selectedPosition = position;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selected_position = position;
+            }
         });
 
-        //when the delete button is clicked, delete the one we chose from the dataList
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        //delete that item when the delete city button is clicked
+        delete_button = findViewById(R.id.delete_button);
+        delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedPosition != 1) {
-                    dataList.remove(selectedPosition);
+                if(selected_position != -1){
+                    dataList.remove(selected_position);
                     cityAdapter.notifyDataSetChanged();
-                    selectedPosition = -1;
+                    selected_position = -1;
                 }
+
             }
         });
-*/
+
 
     }
 };
